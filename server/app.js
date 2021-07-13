@@ -5,22 +5,16 @@ const app = express();
 
 dotenv.config({ path: "./config.env" });
 
-//my database link
-const DB = process.env.DATABASE;
+require("./db/conn");   //connection to db
+app.use(express.json());
+app.use(require('./routes/auth'));
+const user = require("./model/userSchema"); //connection to user
+
+
 const PORT = process.env.PORT;
 
-mongoose.connect(DB,{
-    useNewUrlParser : true,
-    useCreateIndex : true,
-    useUnifiedTopology : true,
-    useFindAndModify : false
-}).then(() => {
-    console.log("connection done");
-}).catch((err) => {
-    console.log("connection not setup");
-});
-//middleware
 
+//middleware
 const middleware = (req , res , next)=>{
     console.log("my middleware");
     next();
@@ -28,7 +22,7 @@ const middleware = (req , res , next)=>{
 
 //home page code here
 app.get("/",(req , res) =>{
-    res.send("hello user");
+    res.send("hello user app.js");
 });
 
 //cart code here
