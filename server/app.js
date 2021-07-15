@@ -2,16 +2,21 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
-
+const path = require("path");
 dotenv.config({ path: "./config.env" });
 
 require("./db/conn");   //connection to db
+
+const PORT = process.env.PORT || 3000;
+
+ const static_path = path.join(__dirname,"../public");
+
+
 app.use(express.json());
 app.use(require('./routes/auth'));
 const user = require("./model/userSchema"); //connection to user
 
 
-const PORT = process.env.PORT || 3000;
 
 
 //middleware
@@ -20,6 +25,8 @@ const middleware = (req , res , next)=>{
     next();
 }
 
+
+app.use(express.static(static_path));
 //home page code here
 app.get("/",(req , res) =>{
     res.send("hello user app.js");
